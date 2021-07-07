@@ -13,8 +13,9 @@ import (
 func main() {
 	inFilePath := flag.String("i", "", "input wav file path")
 	outFilePath := flag.String("o", "", "output pcm file path")
-	bit := flag.Int("b", 10, "output pcm bit depth (Optional)")
-	duration := flag.Int("d", 0, "duration ms (Optional)")
+	bit := flag.Uint("b", 10, "output pcm bit depth (Optional)")
+	duration := flag.Uint("d", 0, "duration ms (Optional)")
+	channel:=flag.Uint("c",0,"channel number(Optional)")
 	flag.Parse()
 	if *inFilePath == "" || *outFilePath == "" {
 		flag.Usage()
@@ -35,10 +36,10 @@ func main() {
 		}
 		for _, sample := range samples {
 			//fmt.Printf("%d %d %d \n", count, format.SampleRate, *duration)
-			if count >= *duration*int(format.SampleRate)/1000 && *duration != 0 {
+			if count >= int(*duration)*int(format.SampleRate)/1000 && *duration != 0 {
 				break
 			}
-			downSample := sampleScaler(reader.IntValue(sample, 0), int(format.BitsPerSample), *bit)
+			downSample := sampleScaler(reader.IntValue(sample, *channel), uint(format.BitsPerSample), *bit)
 			s := decToBin(downSample, *bit)
 			n, e := fileWrite.WriteString(s)
 			if e == nil && n != len(s) {
@@ -52,7 +53,7 @@ func main() {
 }
 
 //十进制转二进制
-func decToBin(dec int, bit int) string {
+func decToBin(dec int, bit uint) string {
 	//int转二进制并补全位数
 	s := fmt.Sprintf("%0*b\n", bit, dec)
 	//fmt.Printf("%s\n", insertNth(s))
@@ -60,7 +61,7 @@ func decToBin(dec int, bit int) string {
 }
 
 //采样位深下变换
-func sampleScaler(input int, bitPerSample int, downBit int) int {
+func sampleScaler(input int, bitPerSample uint, downBit uint) int {
 	bitScaler := bitPerSample - downBit
 	if bitScaler < 0 {
 		bitScaler = 0
