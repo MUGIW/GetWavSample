@@ -6,6 +6,8 @@ usage
 
  -b int output pcm bit depth (Optional) (default 10)
  
+ -c uint channel number(Optional)
+ 
  -d int duration ms (Optional)
  
  -i string input wav file path
