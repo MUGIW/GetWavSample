@@ -13,3 +13,5 @@ usage
  -i string input wav file path
  
  -o string output pcm file path
+
+ -p output is all positive or not (Optional)
