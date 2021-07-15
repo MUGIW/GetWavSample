@@ -17,7 +17,7 @@ func main() {
 	bitDepth := flag.Uint("b", 10, "output pcm bit depth (Optional)")
 	duration := flag.Uint("d", 0, "duration ms (Optional)")
 	channel := flag.Uint("c", 0, "channel number(Optional)")
-	positive := flag.Bool("p", false, "output is all positive or not (Optional)")
+	positive := flag.Bool("p", false, "output is all positive or not (Optional true or false)")
 	flag.Parse()
 	//打印帮助
 	if *inFilePath == "" || *outFilePath == "" {
